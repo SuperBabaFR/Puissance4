@@ -1,6 +1,6 @@
 :root {
-    --J1-color: rgb(255, 64, 64);
-    --J2-color: rgb(255, 196, 0);
+    --J1-color: rgb(255, 51, 51);
+    --J2-color: rgb(216, 204, 0);
 }
 
 .joueur {
@@ -10,6 +10,12 @@
     text-transform: uppercase;
     font-size: xx-large;
     
+    h2#j1 {
+        color: var(--J1-color);
+    }
+    h2#j2 {
+        color: var(--J2-color);
+    }
 }
 
 body {
