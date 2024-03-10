@@ -1,6 +1,7 @@
 :root {
     --J1-color: rgb(255, 51, 51);
     --J2-color: rgb(216, 204, 0);
+    --modal-color: black;
 }
 
 .joueur {
@@ -21,15 +22,12 @@
 body {
     font-family: Arial, sans-serif;
     background-color: rgb(226, 226, 226);
+    overflow: hidden;
 }
 
 #vs {
     width: 10vw;
     height: auto;
-}
-
-.menu {
-    overflow: hidden;
 }
 
 .pion {
@@ -45,6 +43,15 @@ body {
     right: 0;
     top: 35%;
     padding-left: 10px;
+}
+
+.video {
+    display: none;
+
+    &.Chilling {
+        position: relative;
+        top: -50px;
+    }
 }
 
 .title {
@@ -126,8 +133,6 @@ body {
 .info {
     color: #000000;
     font-size: 1.2rem;
-    margin: 0px 30px;
-    margin-top: 0px;
     text-align: right;
     text-decoration:underline;
 }
@@ -163,9 +168,8 @@ body {
     background-color: rgb(11, 76, 222);
     border-radius: 20px;
     padding: 0.5vh;
-    z-index: 10;
+    
     td {
-        z-index: 10;
         border: 5px solid rgb(2, 61, 203);
         border-radius: 100%;
         background-color: white;
@@ -176,8 +180,6 @@ body {
 }
 
 .portePion {
-    /* position: relative;
-    z-index: -10; */
     display: grid;
     justify-items : center;
     align-items : center;
@@ -195,8 +197,6 @@ body {
 }
 
 .game-pion {
-    /* z-index: -10;
-    position: relative; */
     width : 70%;
     height : 70%;
     border-radius : 100%;
@@ -238,17 +238,20 @@ body {
 /* Modal Content/Box */
 .modal-content {
     background-color: #fefefe;
-    margin: 20% auto;
+    margin: 10% 30%;
     padding: 20px;
     border: 1px solid #888;
-    width: 30%;
+    width: auto;
     display: grid;
     align-items: center;
     justify-items: center;
     border-radius: 20px;
-    box-shadow: -20px 0px 200px 0px #ff4b4b, 20px 0px 200px 0px #fff000;
-}
+    box-shadow: -20px 0px 200px 0px var(--modal-color), 20px 0px 200px 0px var(--modal-color);
 
-#state {
-    margin-block: 2em;
+    #state {
+        margin-top: 1em;
+        margin-bottom: 0px;
+        text-shadow: 1px 2px 3px #00000070;
+        font-size: xxx-large;
+    }
 }

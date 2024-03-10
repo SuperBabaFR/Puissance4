@@ -8,18 +8,18 @@ const phraseConnecte = "Connecté en tant que ";
 const colorJ1 = "rgb(255, 77, 77)";
 const colorJ2 = "rgb(255, 204, 0)";
 
- 
-const etat = Object.freeze({ 
+
+const etat = Object.freeze({
     KO: "KO", // votre compte n'est pas reconnu par le serveur
     OK: "OK", // votre compte est reconnu par le serveur
-    ENATTENTE: "En attente" ,// Il n'y a pas encore d'adversaire
+    ENATTENTE: "En attente",// Il n'y a pas encore d'adversaire
     ATTENTESUPPRIMEE: "Attente supprimee",  // Attente d'adversaire supérieure à 2 minutes, suppression de la partie
     ENCOURS: "En cours", // Une partie est en cours
     ABANDON: "Abandon", // Abandon de votre phase d'attente
     J1GAGNE: "joueur 1 gagne", // Le joueur numéro 1 gagne
     J2GAGNE: "joueur 2 gagne", // Le joueur numéro 2 gagne
     MATCHNUL: "Match nul" // Aucun des joueurs ne remporte la partie
-}); 
+});
 
 let monTour = false;
 let gameEnd = false;
@@ -50,7 +50,7 @@ async function Inscription() {
             localStorage.setItem("id", reponse.identifiant);
         }
     }
-    
+
     window.location.replace("menu.html");
 }
 
@@ -76,39 +76,57 @@ function showWhoIsConnected() {
 // Retour à l'inscription
 function Quitter() {
     const etatSearch = document.getElementById("etat");
-
-    if (etatSearch.textContent != "") {
+    const pseudoAdversaire = document.getElementById("j2");
+    if ((etatSearch != null && etatSearch.textContent != "") || (pseudoAdversaire != null && pseudoAdversaire.textContent != "")) {
         // Demande un abandon de la recherche uniquement si elle à été lancée
+        // document.getElementById("videoWin").style.display = "none";
+        // document.getElementById("videoRagequit").style.display = "none";
+        // document.getElementById("videoLoose").style.display = "none";
         Giveup();
     }
-    
+
     console.log("Quitter");
     window.location.replace("index.html");
 }
 
-async function Play() {
+async function Participer(forceReload) {
     // Lancer la partie
-    const id = localStorage.getItem("id");
-    const apicall = await fetch(urlAPI + "participer&identifiant=" + id);
-    const reponse = await apicall.json();
+    if (forceReload || document.getElementById('musicAttente') == null) {
+        const id = localStorage.getItem("id");
+        const apicall = await fetch(urlAPI + "participer&identifiant=" + id);
+        const reponse = await apicall.json();
 
-    console.log("Participer : ", reponse);
+        console.log("Participer : ", reponse);
 
-    const etatSearch = document.getElementById("etat");
+        const etatSearch = document.getElementById("etat");
 
-    if (reponse.etat == etat.ENATTENTE) {
-        etatSearch.textContent = "Recherche d'aversaire...";
-        etatSearch.style.animation = "rotate-hor-center 1.5s cubic-bezier(0.455, 0.030, 0.515, 0.955) 0.5s infinite both";
-        WaitingGame();
-    }
-    else if (reponse.etat == etat.ENCOURS) {
-        localStorage.setItem("joueur", parseInt(reponse.joueur));
-        window.location.replace("jeu.html");
+        if (reponse.etat == etat.ENATTENTE) {
+            etatSearch.textContent = "Recherche d'aversaire...";
+            etatSearch.style.animation = "rotate-hor-center 1.5s cubic-bezier(0.455, 0.030, 0.515, 0.955) 0.5s infinite both";
+            // Musique d'attente
+            if (document.getElementById('musicAttente') == null) {
+                createAudio("musicAttente", "Local Forecast - Elevator.mp3", 1);
+                // Animation de chilling
+                document.getElementById("videoChill").style.display = "block";
+                document.getElementById("videoChill").scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
+            }
+            // Recherche de partie
+            WaitingGame();
+        }
+        else if (reponse.etat == etat.ENCOURS) {
+            localStorage.setItem("joueur", parseInt(reponse.joueur));
+            window.location.replace("jeu.html");
+        }
     }
 }
 
 // Rafraîchit les informations de la partie
 async function refresh() {
+
+    if (gameEnd) {
+        return;
+    }
+
     const Id = localStorage.getItem("id");
     const pseudo = localStorage.getItem("pseudo");
     const joueurIndex = localStorage.getItem("joueur");
@@ -120,6 +138,10 @@ async function refresh() {
     const h2J1 = document.getElementById('j1');
     const h2J2 = document.getElementById('j2');
 
+    if (reponse.carte != undefined) {
+        updatePlateau(reponse.carte);
+    }
+
     if (reponse.etat == etat.ENCOURS) {
         if (reponse.adversaire == null) {
             console.log("partie crash");
@@ -129,17 +151,17 @@ async function refresh() {
         monTour = (joueurIndex == reponse.tour);
         h2J1.textContent = joueurIndex == 1 ? pseudo : reponse.adversaire;
         h2J2.textContent = joueurIndex == 2 ? pseudo : reponse.adversaire;
-        
+
         if (reponse.tour == "1") {
-            h2J1.style.animation = "text-pop-up-bottom 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both";
+            h2J1.style.animation = "text-pop-up-bottom 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both, pseudo-pulse 2s infinite";
             h2J2.style.animation = "";
         }
         else {
             h2J1.style.animation = "";
-            h2J2.style.animation = "text-pop-up-bottom 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both";
+            h2J2.style.animation = "text-pop-up-bottom 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both, pseudo-pulse 2s infinite";
         }
 
-    } 
+    }
     else if (reponse.etat.includes("gagne")) {
         if (reponse.etat.includes(joueurIndex)) {
             GameEnd(null);
@@ -147,17 +169,13 @@ async function refresh() {
         else {
             GameEnd(false);
         }
-    } 
+    }
     else if (reponse.etat == etat.OK) {
         window.location.replace("menu.html");
     }
     else {
         alert('crash server');
     }
-
-    if (reponse.carte != undefined) {
-        updatePlateau(reponse.carte);
-    } 
 }
 
 function updatePlateau(carte) {
@@ -172,20 +190,28 @@ function updatePlateau(carte) {
             // AJOUT DE NOUVEAU PION
             if (cellule.innerHTML == "" && caseValue > 0) {
                 const portepion = document.createElement("div");
-                const pion = document.createElement("div"); 
+                const pion = document.createElement("div");
 
                 // Ajout CSS pour le fond du pion
-                portepion.classList.add("portePion"); 
+                portepion.classList.add("portePion");
                 portepion.classList.add("J" + caseValue);
                 // Ajout CSS pour le coeur du pion
-                pion.classList.add("game-pion"); 
+                pion.classList.add("game-pion");
                 pion.classList.add("J" + caseValue);
-                
+
                 // Calcul de la distance entre le haut du plateau et la position finale du NOUVEAU pion
                 const distance = "-" + ligne + 1 * cellule.offsetHeight + "px";
                 document.documentElement.style.setProperty("--distance", distance);
                 // Ajout de l'animation
                 portepion.style.animation = "pionFall 0.5s linear both";
+
+                // Animation de rebond
+                portepion.addEventListener("animationend", () => {
+                    if (!portepion.style.animation.includes("bounce-pion")) {
+                        portepion.style.animation += ", bounce-pion 0.9s both";
+                    }
+                });
+
                 // Ajout du pion à la case correspondante
                 portepion.appendChild(pion);
                 cellule.appendChild(portepion);
@@ -194,15 +220,15 @@ function updatePlateau(carte) {
     }
 }
 
-function sleep(ms) { 
-    return new Promise(resolve => setTimeout(resolve, ms)); 
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 function addInteractions() {
     const animation = "cell-pulse-J" + localStorage.getItem("joueur") + " 1s ease-in-out 0s infinite";
 
-    for (var i=1; i<=42; i++) {
-        let colonne = (i % 7==0)? 7 : i % 7;
+    for (var i = 1; i <= 42; i++) {
+        let colonne = (i % 7 == 0) ? 7 : i % 7;
         let td = document.getElementById(i);
         td.addEventListener("click", () => {
             Jouer(colonne);
@@ -238,57 +264,83 @@ async function Jouer(colonne) {
         return;
     }
     const Id = localStorage.getItem("id");
+    const joueurIndex = localStorage.getItem("joueur");
 
     apicall = await fetch(urlAPI + "jouer&position=" + colonne + "&identifiant=" + Id);
     reponse = await apicall.json();
 
     console.log("Jouer(" + colonne + ") : ", reponse);
-    
+    // A CORRIGER
     monTour = (joueurIndex == reponse.tour);
-    
+
     updatePlateau(reponse.carte);
 
     if (reponse.etat.includes("gagne")) {
-        GameEnd(reponse.etat.includes(localStorage.getItem("joueur")));
+        GameEnd(reponse.etat.includes(joueurIndex));
     }
 }
 
-function GameEnd(IamWinner)
-{
+async function GameEnd(IamWinner) {
+    console.log("GameEnd(" + IamWinner + ") : ", IamWinner);
     gameEnd = true;
-    
+
     if (IamWinner != null) {
         if (IamWinner) {
-            showModal("Vous avez gagné !", 2000);
-
+            await showModal("Victoire !", 2000, "green", "white");
+            // Animation de victoire
+            document.getElementById("videoWin").style.display = "block";
+            // Musique de victoire
+            createAudio("musicVictoire", "Driftveil City [Pokémon Black & White].mp3", 0.5);
         }
         else {
-            showModal("Vous avez perdu...", 2000);
+            await showModal("Défaite", 2000, "red", "darkred");
+            // Animation de défaite
+            document.getElementById("videoLoose").play();
+            document.getElementById("videoLoose").style.display = "block";
+            // Musique de défaite
+            // createAudio("musicLoose", "Yoshi's Island OST - Flower Garden.mp3", 0.5);
         }
     }
     else {
-        showModal("il a ragequit...", 2000);
+        // Animation de ragequit
+        document.getElementById("videoRagequit").style.display = "block";
+        // Musique de victoire
+        createAudio("musicVictoire", "Driftveil City [Pokémon Black & White].mp3", 0.5);
+        await showModal("Il a RageQuit...", 0, "black", "black");
     }
 }
 
 
-async function showModal(message, wait) {
+async function showModal(message, wait, color, bgcolor) {
     var modal = document.getElementById("myModal");
     var stateText = document.getElementById("state");
 
-    stateText.textContent = message;
+    document.documentElement.style.setProperty("--modal-color", bgcolor);
 
-    if(wait != undefined) {
+    stateText.textContent = message;
+    stateText.style.color = color;
+
+    if (wait != undefined) {
         await sleep(wait);
     }
 
     modal.style.display = "block";
 }
 
+function createAudio(id, title, volume) {
+    const music = document.createElement("audio");
+    music.id = id;
+    music.src = "musics/" + title;
+    music.loop = true;
+    music.volume = volume;
+    document.body.appendChild(music);
+    music.play();
+}
+
 // Recherche de game après la participation
 async function WaitingGame() {
     const id = localStorage.getItem("id");
-    let apicall; 
+    let apicall;
     let reponse;
     const etatSearch = document.getElementById("etat");
 
@@ -307,7 +359,7 @@ async function WaitingGame() {
             }
 
             // Relance la recherche comme elle a été supprimée
-            Play();
+            Participer(true);
             return;
         }
         // Délai entre chaque tentative de lecture du statut
@@ -316,7 +368,8 @@ async function WaitingGame() {
     } while (reponse.etat == etat.ENATTENTE)
 
     localStorage.setItem("joueur", parseInt(reponse.joueur));
-
+    // document.body.removeChild(document.getElementById("musicAttente"));
+    document.getElementById("videoChill").style.display = "none";
     window.location.replace("jeu.html");
 }
 
@@ -326,7 +379,7 @@ async function Giveup() {
     const apicall = await fetch(urlAPI + "abandonner&identifiant=" + id);
     const reponse = await apicall.json();
     console.log(reponse);
-    
+
     if (reponse.etat.includes("gagne")) {
         ("Vous avez abandonné votre partie !");
         window.location.replace("menu.html");
@@ -353,15 +406,15 @@ function OLDcreatePions() {
         div.id = index;
         div.appendChild(imgPion);
         div.classList.add('pion');
-        xCoord = Math.floor((Math.random() * nbPions)) * (100/nbPions);
+        xCoord = Math.floor((Math.random() * nbPions)) * (100 / nbPions);
 
         div.style.left = xCoord + "vw";
         div.style.animation = "pion-vertical 4s linear infinite";
         div.style.animationDuration = 4 + Math.floor((Math.random() * 10)) + 's';
-        div.addEventListener("animationiteration", () => {replacePion(div);});
+        div.addEventListener("animationiteration", () => { replacePion(div); });
 
         document.getElementById("background").appendChild(div);
-        
+
     }
 }
 
@@ -380,14 +433,14 @@ function CreateAnimatedBackground() {
         portepion.classList.add('pion');
         portepion.style.width = "60px";
         portepion.style.height = "60px";
-        
-        xCoord = Math.floor((Math.random() * nbPions)) * (100/nbPions);
+
+        xCoord = Math.floor((Math.random() * nbPions)) * (100 / nbPions);
 
         portepion.style.left = xCoord + "vw";
         portepion.style.animation = "pion-vertical 4s linear infinite";
         portepion.style.animationDuration = 4 + Math.floor((Math.random() * 10)) + 's';
-        portepion.addEventListener("animationiteration", () => { 
-            xCoord = Math.floor((Math.random() * nbPions)) * (100/nbPions);
+        portepion.addEventListener("animationiteration", () => {
+            xCoord = Math.floor((Math.random() * nbPions)) * (100 / nbPions);
             portepion.style.left = xCoord + "vw";
         });
 
@@ -403,14 +456,14 @@ function SetupModal() {
     var btnQuitter = document.getElementById("endgame");
 
     // When the user clicks on <span> (x), close the modal
-    btnQuitter.onclick = function() {
+    btnQuitter.onclick = function () {
         modal.style.display = "none";
         window.location.replace("menu.html");
     }
 }
 
 // Script lancé au lancement de chaque page
-document.addEventListener("DOMContentLoaded", async function() {
+document.addEventListener("DOMContentLoaded", async function () {
     const urlActuelle = window.location.href;
     const pseudo = localStorage.getItem("pseudo");
 
@@ -442,7 +495,7 @@ document.addEventListener("DOMContentLoaded", async function() {
         while (!gameEnd) {
             refresh();
             await sleep(1000);
-        } 
-        
+        }
+
     }
 });

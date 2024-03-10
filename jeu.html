@@ -96,8 +96,23 @@
     <div id="myModal" class="modal">
         <div class="modal-content">
             <h1 id="state"></h1>
+            <video id="videoWin" class="video" autoplay loop width="320">
+                <source src="videos/festif.mov" type="video/mp4; codecs=hvc1"/>
+                <source src="videos/festif.webm" type="video/webm">
+                Merde
+            </video>
+            <video id="videoRagequit" class="video" autoplay loop width="320">
+                <source src="videos/smol.mov" type="video/mp4; codecs=hvc1"/>
+                <source src="videos/smol.webm" type="video/webm">
+                Merde
+            </video>
+            <video id="videoLoose" class="video" loop width="320">
+                <source src="videos/loose.mov" type="video/mp4; codecs=hvc1"/>
+                <source src="videos/loose.webm" type="video/webm">
+                Merde
+            </video>
             <div class="buttons">
-                <button type="button" class="menu-button first" id="endgame">Quitter</button>
+                <button type="button" class="menu-button first" id="endgame" onclick="Quitter()">Quitter</button>
             </div>
         </div>
     </div>

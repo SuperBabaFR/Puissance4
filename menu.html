@@ -18,7 +18,7 @@
         <h1 class="title">Puissance 4</h1>
         <div class="menu-items">
             
-            <button class="menu-button first" onclick="Play()">Jouer</button>
+            <button class="menu-button first" onclick="Participer(false)">Jouer</button>
             <button class="menu-button second" onclick="Quitter()">Déconnexion</button>
         
             <div class="recherche">
@@ -28,6 +28,13 @@
             <div class="info infoAnim">
                 <p id="connected"></p>
             </div>
+
+            
+            <video id="videoChill" class="video Chilling" autoplay loop width="320">
+                <source src="videos/chilling.mov" type="video/mp4; codecs=hvc1"/>
+                <source src="videos/chilling.webm" type="video/webm">
+                Merde
+            </video>
         </div>
     </div>
 </body>
