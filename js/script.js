@@ -290,7 +290,7 @@ async function GameEnd(IamWinner) {
             // Animation de victoire
             document.getElementById("videoWin").style.display = "block";
             // Musique de victoire
-            createAudio("musicVictoire", "Driftveil City [Pokémon Black & White].mp3", 0.5);
+            createAudio("musicVictoire", "Driftveil City [Pokémon Black & White].mp3", 0.3);
         }
         else {
             await showModal("Défaite", 2000, "red", "darkred");
@@ -305,7 +305,7 @@ async function GameEnd(IamWinner) {
         // Animation de ragequit
         document.getElementById("videoRagequit").style.display = "block";
         // Musique de victoire
-        createAudio("musicVictoire", "Driftveil City [Pokémon Black & White].mp3", 0.5);
+        createAudio("musicVictoire", "Driftveil City [Pokémon Black & White].mp3", 0.3);
         await showModal("Il a RageQuit...", 0, "black", "black");
     }
 }
