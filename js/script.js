@@ -462,6 +462,10 @@ function SetupModal() {
     }
 }
 
+function EasterEgg() {
+    window.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ', '_blank');
+}
+
 // Script lancé au lancement de chaque page
 document.addEventListener("DOMContentLoaded", async function () {
     const urlActuelle = window.location.href;
@@ -484,6 +488,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
     }
     else if (urlActuelle.includes("menu")) {
+        document.getElementById("videoChill").addEventListener('click', () => {EasterEgg();});
         CreateAnimatedBackground();
         showWhoIsConnected();
     }
