@@ -78,10 +78,10 @@ function Quitter() {
     const etatSearch = document.getElementById("etat");
     const pseudoAdversaire = document.getElementById("j2");
     if ((etatSearch != null && etatSearch.textContent != "") || (pseudoAdversaire != null && pseudoAdversaire.textContent != "")) {
-        // Demande un abandon de la recherche uniquement si elle à été lancée
         // document.getElementById("videoWin").style.display = "none";
         // document.getElementById("videoRagequit").style.display = "none";
         // document.getElementById("videoLoose").style.display = "none";
+        // Demande un abandon de la recherche uniquement si elle à été lancée
         Giveup();
     }
 
@@ -173,6 +173,10 @@ async function refresh() {
     else if (reponse.etat == etat.OK) {
         window.location.replace("menu.html");
     }
+    else if (reponse.etat == etat.MATCHNUL)
+    {
+        MatchNul();
+    }
     else {
         alert('crash server');
     }
@@ -203,7 +207,10 @@ function updatePlateau(carte) {
                 const distance = "-" + ligne + 1 * cellule.offsetHeight + "px";
                 document.documentElement.style.setProperty("--distance", distance);
                 // Ajout de l'animation
-                portepion.style.animation = "pionFall 0.5s linear both";
+                portepion.style.animation = "pionFall 0.5s cubic-bezier(.42,-0.08,1,1) both";
+                createAudio("pion", "pion sound effect.mp3", 1, false);
+                const pionSound = document.getElementById("pion");
+                pionSound.addEventListener("ended", () => {document.body.removeChild(pionSound);});
 
                 // Animation de rebond
                 portepion.addEventListener("animationend", () => {
@@ -280,6 +287,11 @@ async function Jouer(colonne) {
     }
 }
 
+async function MatchNul() {
+    await showModal("Match nul", 2000, "blue", "blue");
+    document.getElementById("state").style.marginBottom = "1em";
+}
+
 async function GameEnd(IamWinner) {
     console.log("GameEnd(" + IamWinner + ") : ", IamWinner);
     gameEnd = true;
@@ -327,11 +339,11 @@ async function showModal(message, wait, color, bgcolor) {
     modal.style.display = "block";
 }
 
-function createAudio(id, title, volume) {
+function createAudio(id, title, volume, loop) {
     const music = document.createElement("audio");
     music.id = id;
     music.src = "musics/" + title;
-    music.loop = true;
+    music.loop = loop!=null?loop:true;
     music.volume = volume;
     document.body.appendChild(music);
     music.play();
