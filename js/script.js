@@ -270,15 +270,17 @@ async function Jouer(colonne) {
     if (!monTour) {
         return;
     }
-    const Id = localStorage.getItem("id");
+    const id = localStorage.getItem("id");
     const joueurIndex = localStorage.getItem("joueur");
 
-    apicall = await fetch(urlAPI + "jouer&position=" + colonne + "&identifiant=" + Id);
-    reponse = await apicall.json();
+    const apicall = await fetch(urlAPI + "jouer&position=" + colonne + "&identifiant=" + id);
+    const reponse = await apicall.json();
 
     console.log("Jouer(" + colonne + ") : ", reponse);
     // A CORRIGER
-    monTour = (joueurIndex == reponse.tour);
+    if (reponse.tour != null) {
+        monTour = (joueurIndex == reponse.tour);
+    }
 
     updatePlateau(reponse.carte);
 
@@ -390,10 +392,10 @@ async function Giveup() {
     let id = localStorage.getItem("id");
     const apicall = await fetch(urlAPI + "abandonner&identifiant=" + id);
     const reponse = await apicall.json();
-    console.log(reponse);
+    console.log("Abandon : ", reponse);
 
     if (reponse.etat.includes("gagne")) {
-        ("Vous avez abandonné votre partie !");
+        // ("Vous avez abandonné votre partie !");
         window.location.replace("menu.html");
     }
     else if (reponse.etat == etat.KO) {

@@ -37,7 +37,7 @@
 
 @keyframes cell-pulse-J1 {
     0% {
-        background-color: white;
+        background-color: #00000057;
     }
 
     50% {
@@ -46,13 +46,13 @@
     }
 
     100% {
-        background-color: white;
+        background-color: #00000057;
     }
 }
 
 @keyframes cell-pulse-J2 {
     0% {
-        background-color: white;
+        background-color: #00000057;
     }
 
     50% {
@@ -61,7 +61,7 @@
     }
 
     100% {
-        background-color: white;
+        background-color: #00000057;
     }
 }
 
