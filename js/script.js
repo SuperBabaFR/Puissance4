@@ -480,6 +480,14 @@ function EasterEgg() {
     window.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ', '_blank');
 }
 
+function Transitions(page) {
+    if (page == "menu") {
+        const transition = document.getElementById("transition");
+
+        transition.addEventListener("animationend", () => {transition.hidden = true;});
+    }
+}
+
 // Script lancé au lancement de chaque page
 document.addEventListener("DOMContentLoaded", async function () {
     const urlActuelle = window.location.href;
@@ -502,6 +510,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
     }
     else if (urlActuelle.includes("menu")) {
+        Transitions("menu");
         document.getElementById("videoChill").addEventListener('click', () => {EasterEgg();});
         CreateAnimatedBackground();
         showWhoIsConnected();
