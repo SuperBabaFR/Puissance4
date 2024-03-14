@@ -1,6 +1,6 @@
 :root {
-    --J1-color: rgb(255, 51, 51);
-    --J2-color: rgb(216, 204, 0);
+    --J1-color: #ff3333;
+    --J2-color: #d8cc00;
     --modal-color: black;
 }
 
@@ -62,7 +62,10 @@ body {
     margin: 0 auto;
     font-size: 4.5rem;
     margin: 0;
-    animation: text-pop-up-top 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both, Color 2s ease infinite;
+    background: linear-gradient(90deg, var(--J1-color) 0%, var(--J2-color) 50%, var(--J1-color) 100%);
+    background-clip: text;
+    color: transparent;
+    animation: text-pop-up-top 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both, Color 4s ease infinite;
 }
 
 .menu-items {
@@ -80,7 +83,7 @@ body {
     text-align: center;
     font-size: 1.5rem;
     border: 2px solid black;
-    animation: slide-top 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) forwards;
+    /* animation: slide-top 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) forwards; */
 }
 
 #pseudo:hover {
@@ -89,7 +92,7 @@ body {
   
 #pseudo:focus {
     outline: none; 
-    animation: slide-top 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) forwards, border-pulse 2s infinite;
+    animation: /*slide-top 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) forwards,*/ border-pulse 2s infinite;
 }
 
 .menu-button {
@@ -106,7 +109,7 @@ body {
     box-shadow: 0px 0px 10px 1px #ffae00;
 }
 
-.first {
+/* .first {
     animation: slide-top 0.7s cubic-bezier(0.250, 0.460, 0.450, 0.940) forwards;
 }
 
@@ -121,7 +124,21 @@ body {
 .second:hover {
     box-shadow: -70px 0 70px -5px var(--J1-color), 75px 0 70px -5px var(--J2-color);
     animation: slide-top 0.9s cubic-bezier(0.250, 0.460, 0.450, 0.940) forwards, scale-up-center 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+} */
+
+
+
+.first:hover {
+    box-shadow: -70px 0 70px -5px var(--J1-color), 75px 0 70px -5px var(--J2-color);
+    animation: scale-up-center 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
 }
+
+
+.second:hover {
+    box-shadow: -70px 0 70px -5px var(--J1-color), 75px 0 70px -5px var(--J2-color);
+    animation: scale-up-center 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+}
+
 
 
 .menu-button:hover {

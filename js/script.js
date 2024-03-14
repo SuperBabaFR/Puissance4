@@ -5,9 +5,8 @@ const urlAPI = "https://trankillprojets.fr/P4/?";
 const phraseReconnexion = "Reconnexion : ";
 const phraseConnecte = "Connecté en tant que ";
 
-const colorJ1 = "rgb(255, 77, 77)";
-const colorJ2 = "rgb(255, 204, 0)";
-
+const colorJ1 = "#ff3333";
+const colorJ2 = "#d8cc00";
 
 const etat = Object.freeze({
     KO: "KO", // votre compte n'est pas reconnu par le serveur
@@ -50,13 +49,14 @@ async function Inscription() {
             localStorage.setItem("id", reponse.identifiant);
         }
     }
-
-    window.location.replace("menu.html");
+    MenuTransition();
+    // window.location.replace("menu.html");
 }
 
 // Reconnexion avec un pseudo précédemment enregistré
 function Reconnexion() {
-    window.location.replace("menu.html");
+    MenuTransition();
+    // window.location.replace("menu.html");
     console.log("Reconnexion");
     console.log("Pseudo : " + localStorage.getItem("pseudo"));
     console.log("Identifiant : " + localStorage.getItem("id"));
@@ -171,7 +171,8 @@ async function refresh() {
         }
     }
     else if (reponse.etat == etat.OK) {
-        window.location.replace("menu.html");
+        MenuTransition();
+        // window.location.replace("menu.html");
     }
     else if (reponse.etat == etat.MATCHNUL)
     {
@@ -382,7 +383,6 @@ async function WaitingGame() {
     } while (reponse.etat == etat.ENATTENTE)
 
     localStorage.setItem("joueur", parseInt(reponse.joueur));
-    // document.body.removeChild(document.getElementById("musicAttente"));
     document.getElementById("videoChill").style.display = "none";
     window.location.replace("jeu.html");
 }
@@ -395,12 +395,14 @@ async function Giveup() {
     console.log("Abandon : ", reponse);
 
     if (reponse.etat.includes("gagne")) {
-        // ("Vous avez abandonné votre partie !");
-        window.location.replace("menu.html");
+        // Vous avez abandonné votre partie !
+        MenuTransition();
+        // window.location.replace("menu.html");
     }
     else if (reponse.etat == etat.KO) {
         console.log("personne dans la partie");
-        window.location.replace("menu.html");
+        MenuTransition();
+        // window.location.replace("menu.html");
     }
     else if (reponse.etat == "Abandon") {
         console.log("Abandon de la recherche");
@@ -463,16 +465,13 @@ function CreateAnimatedBackground() {
 }
 
 function SetupModal() {
-    // Get the modal
     var modal = document.getElementById("myModal");
-
-    // Get the <span> element that closes the modal
     var btnQuitter = document.getElementById("endgame");
 
-    // When the user clicks on <span> (x), close the modal
     btnQuitter.onclick = function () {
         modal.style.display = "none";
-        window.location.replace("menu.html");
+        MenuTransition();
+        // window.location.replace("menu.html");
     }
 }
 
@@ -480,11 +479,21 @@ function EasterEgg() {
     window.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ', '_blank');
 }
 
-function Transitions(page) {
-    if (page == "menu") {
-        const transition = document.getElementById("transition");
+function MenuTransition() {
+    document.getElementById("p1").classList.add("square");
+}
 
-        transition.addEventListener("animationend", () => {transition.hidden = true;});
+
+function Transitions(page) {
+    if (page == "index" || page == "jeu") {
+        document.getElementById("p1").addEventListener("animationend", () => {window.location.href = "menu.html"});
+    }
+    else if (page == "menu") {
+        const transition = document.getElementById("transition");
+        transition.addEventListener("animationend", () => 
+        {
+            transition.hidden = true;
+        });
     }
 }
 
@@ -499,7 +508,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     // En fonction de la page
     if (urlActuelle.includes("index") || urlActuelle == "http://127.0.0.1:5500/") {
         CreateAnimatedBackground();
-
+        Transitions("index");
         if (localStorage.getItem("pseudo") != "") {
             console.log("Ancien pseudo : " + pseudo);
             document.getElementById("reconnexion").textContent = phraseReconnexion + pseudo;
@@ -516,6 +525,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         showWhoIsConnected();
     }
     else if (urlActuelle.includes("jeu")) {
+        Transitions("jeu");
         SetupModal();
         showWhoIsConnected(); // Affiche qui est connecté
         addInteractions();
