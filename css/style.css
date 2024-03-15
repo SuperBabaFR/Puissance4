@@ -115,6 +115,10 @@ body {
     &.second {
         animation: slide-top 0.9s cubic-bezier(0.250, 0.460, 0.450, 0.940) var(--delay) forwards;
     }
+
+    &.btn-abandon {
+        animation: none;
+    }
 }
 
 .menu-button:hover {
@@ -122,17 +126,17 @@ body {
     box-shadow: -70px 0 70px -5px var(--J1-color), 75px 0 70px -5px var(--J2-color);
     transform: scale(1.2);
 
-
-    &.btn-abandon {
-        box-shadow: 0px 0px 10px 1px #ff0000;
-    }
-
     &.first {
         animation: slide-top 0.7s cubic-bezier(0.250, 0.460, 0.450, 0.940) var(--delay) forwards, scale-up-center 200ms 1 cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
     }
 
     &.second {
         animation: slide-top 0.9s cubic-bezier(0.250, 0.460, 0.450, 0.940) var(--delay) forwards, scale-up-center 200ms 1 cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+    }
+    
+    &.btn-abandon {
+        box-shadow: 0px 0px 10px 1px #ff0000;
+        animation: scale-up-center 200ms 1 cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
     }
 }
 
@@ -167,7 +171,7 @@ body {
 .plateau {
     display: grid;
     justify-items: center;
-    animation: plateau-in 1s ease-in-out 0s 1 both;
+    /* animation: plateau-in 1s ease-in-out 0s 1 both; */
 }
 
 .tabPlateau {
@@ -301,6 +305,10 @@ body {
             width: 40px;
             height: 40px;
         }
+    }
+
+    .video {
+        width: 200px;
     }
 
     .game-hud {

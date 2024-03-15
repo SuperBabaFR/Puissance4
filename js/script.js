@@ -297,8 +297,11 @@ async function MatchNul() {
 
 async function GameEnd(IamWinner) {
     console.log("GameEnd(" + IamWinner + ") : ", IamWinner);
+    if (gameEnd) {
+        return;
+    }
     gameEnd = true;
-
+    
     if (IamWinner != null) {
         if (IamWinner) {
             await showModal("Victoire !", 2000, "green", "white");
