@@ -2,6 +2,8 @@
 
 const urlAPI = "https://trankillprojets.fr/P4/?";
 
+const URL = "https://superbabafr.github.io/Puissance4/";
+
 const phraseReconnexion = "Reconnexion : ";
 const phraseConnecte = "Connecté en tant que ";
 
@@ -531,7 +533,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     console.log(urlActuelle);
 
     // En fonction de la page
-    if (urlActuelle.includes("index") || urlActuelle == "http://127.0.0.1:5500/" || urlActuelle == "http://127.0.0.1:5501/") {
+    if (urlActuelle.includes("index") || urlActuelle == "http://127.0.0.1:5500/" || urlActuelle == "http://127.0.0.1:5501/" || urlActuelle == URL) {
         Transitions("index");
         if (localStorage.getItem("pseudo") != "") {
             console.log("Ancien pseudo : " + pseudo);
