@@ -167,6 +167,7 @@ body {
 .plateau {
     display: grid;
     justify-items: center;
+    animation: plateau-in 1s ease-in-out 0s 1 both;
 }
 
 .tabPlateau {
@@ -254,10 +255,74 @@ body {
     border-radius: 20px;
     box-shadow: -20px 0px 200px 0px var(--modal-color), 20px 0px 200px 0px var(--modal-color);
 
-    #state {
+    .state {
         margin-top: 1em;
         margin-bottom: 0px;
         text-shadow: 1px 2px 3px #00000070;
         font-size: xxx-large;
     }
 }
+
+
+@media screen and (max-device-width: 481px)
+{
+    .firstTransition {
+        .pionleft {
+            width: 40px;
+            height: 40px;
+            margin-inline: auto;
+        }
+    
+        .pionright {
+            width: 40px;
+            height: 40px;
+            margin-inline: auto;
+        }
+    }
+    
+    .title {
+        font-size: 3rem;
+    }
+
+    .plateau {
+        margin-block: 5vh;
+    }
+
+    .menu-button {
+        font-size: 1.2rem;
+    }
+    
+    .tabPlateau {
+        padding: 0.5vh;
+
+        td {
+            border: 3px solid rgb(2, 61, 203);
+            border-radius: 100%;
+            width: 40px;
+            height: 40px;
+        }
+    }
+
+    .game-hud {
+        margin-bottom: 2vh;
+    }
+
+    .joueur {
+        font-size: medium;
+    }
+
+    .abandon {
+        margin-block: 5vh;
+    }
+
+    .modal-content {
+        margin: 60% 10%;
+    }
+    
+    .modal-content {
+        .state {
+            font-size: x-large;
+        }
+    }
+}
+

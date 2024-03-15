@@ -528,7 +528,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     console.log(urlActuelle);
 
     // En fonction de la page
-    if (urlActuelle.includes("index") || urlActuelle == "http://127.0.0.1:5500/") {
+    if (urlActuelle.includes("index") || urlActuelle == "http://127.0.0.1:5500/" || urlActuelle == "http://127.0.0.1:5501/") {
         Transitions("index");
         if (localStorage.getItem("pseudo") != "") {
             console.log("Ancien pseudo : " + pseudo);
