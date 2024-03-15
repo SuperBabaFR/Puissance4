@@ -1,9 +1,65 @@
+:root {
+    --transition-color: black;/*rgb(216, 204, 0);*/
+}
+
+
+.firstTransition {
+    width: 100vw;
+    height: 10vh;
+    display: flex;
+    align-items: center;
+    position: absolute;
+    top: 30%;
+    animation: pions 1s ease-in-out 0s;
+
+    .pionleft {
+        width: 88px;
+        height: 88px;
+        margin-inline: auto;
+    }
+
+    .pionright {
+        width: 88px;
+        height: 88px;
+        margin-inline: auto;
+    }
+}
+
+@keyframes title-raise {
+    0% {
+        transform: translateY(70vh);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
+}
+
+@keyframes pions {
+    0% {
+        transform: translateY(70vh);
+        /* width: 100vw; */
+    }
+
+    50% {
+        transform: translateY(0);
+        width: 100vw;
+        left: 0;
+    }
+
+    100% {
+        transform: translateY(-50vh);
+        left: -50vw;
+        width: 200vw;
+    }
+}
+
 .transition-in {
     width: 100%;
     height: 100%;
     position: absolute;
     z-index: 1;
-    background-color: rgb(216, 204, 0);
+    background-color: var(--transition-color);
     animation: frameTransition 1s linear 0s;
 }
 
@@ -22,7 +78,7 @@
 .square {
     display: grid;
     justify-content: center;
-    background-color: rgb(216, 204, 0);
+    background-color: var(--transition-color);
     width: 100vw;
     height: 100vh;
     animation: square 1s linear 0s;

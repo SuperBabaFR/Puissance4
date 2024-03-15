@@ -13,12 +13,25 @@
 
 <body id="menu">
     
-    <div id="background">
+    <div id="background"> <!-- style="display: none;"> -->
         <!-- DIV POUR TOUS LES PIONS QUI SONT AJOUTEES EN JS -->
+    </div>
+
+    <div id="transition-first" class="firstTransition">
+        <div class="pionleft">
+            <div class="portePion J1">
+                <div class="game-pion J1"></div>
+            </div>
+        </div>
+        <div class="pionright">
+            <div class="portePion J2">
+                <div class="game-pion J2"></div>
+            </div>
+        </div>
     </div>
     
     <div id="menu-position">
-        <h1 class="title">Puissance 4</h1>
+        <h1 id="title" class="title">Puissance 4</h1>
         <div class="menu-items">
             <input type="text" name="pseudo" id="pseudo" placeholder="Pseudo">            
             <button class="menu-button first" id="inscription" onclick="Inscription()">Inscription</button>

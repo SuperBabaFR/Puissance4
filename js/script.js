@@ -321,7 +321,7 @@ async function GameEnd(IamWinner) {
         document.getElementById("videoRagequit").style.display = "block";
         // Musique de victoire
         createAudio("musicVictoire", "Driftveil City [Pokémon Black & White].mp3", 0.3);
-        await showModal("Il a RageQuit...", 0, "black", "black");
+        await showModal("Il/Elle a RageQuit...", 0, "black", "black");
     }
 }
 
@@ -485,7 +485,29 @@ function MenuTransition() {
 
 
 function Transitions(page) {
-    if (page == "index" || page == "jeu") {
+    if (page == "index") {
+        // Ajout de trigger pour transition
+        document.getElementById("p1").addEventListener("animationend", () => {window.location.href = "menu.html"});
+
+
+        // Setup animation
+        document.getElementById("title").style.animation = "title-raise 500ms ease-in-out forwards, Color 4s ease infinite";
+        document.getElementById("pseudo").style.visibility = "hidden";
+        document.getElementById("reconnexion").style.visibility = "hidden";
+        document.getElementById("inscription").style.visibility = "hidden";
+
+        // Animation de startup
+        document.getElementById("transition-first").addEventListener("animationend", () => {
+            document.getElementById("title").style.animation = "";
+            document.getElementById("title").classList.add("load");
+            document.getElementById("pseudo").style.visibility = "visible";
+            document.getElementById("reconnexion").style.visibility = "visible";
+            document.getElementById("inscription").style.visibility = "visible";
+            document.getElementById("transition-first").style.visibility = "hidden";
+            CreateAnimatedBackground();
+        });
+    }
+    else if (page == "jeu") {
         document.getElementById("p1").addEventListener("animationend", () => {window.location.href = "menu.html"});
     }
     else if (page == "menu") {
@@ -507,7 +529,6 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     // En fonction de la page
     if (urlActuelle.includes("index") || urlActuelle == "http://127.0.0.1:5500/") {
-        CreateAnimatedBackground();
         Transitions("index");
         if (localStorage.getItem("pseudo") != "") {
             console.log("Ancien pseudo : " + pseudo);

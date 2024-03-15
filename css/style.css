@@ -2,6 +2,7 @@
     --J1-color: #ff3333;
     --J2-color: #d8cc00;
     --modal-color: black;
+    --delay: 750ms
 }
 
 .joueur {
@@ -10,10 +11,11 @@
     align-items: center;
     text-transform: uppercase;
     font-size: xx-large;
-    
+
     h2#j1 {
         color: var(--J1-color);
     }
+
     h2#j2 {
         color: var(--J2-color);
     }
@@ -36,7 +38,7 @@ body {
     width: fit-content;
     height: fit-content;
     position: fixed;
-    top:0;
+    top: 0;
 }
 
 #menu-position {
@@ -61,15 +63,14 @@ body {
     text-align: center;
     margin: 0 auto;
     font-size: 4.5rem;
-    margin: 0;
-    background: linear-gradient(90deg, var(--J1-color) 0%, var(--J2-color) 50%, var(--J1-color) 100%);
-    background-clip: text;
-    color: transparent;
-    animation: text-pop-up-top 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both, Color 4s ease infinite;
+    animation: title-raise 500ms ease-in-out forwards, Color 4s ease infinite;
+    &.load {
+        animation: text-pop-up-top 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both, Color 4s ease infinite;
+    }
 }
 
 .menu-items {
-    display:grid;
+    display: grid;
     flex-direction: column;
     justify-items: center;
     padding: 20px;
@@ -83,16 +84,16 @@ body {
     text-align: center;
     font-size: 1.5rem;
     border: 2px solid black;
-    /* animation: slide-top 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) forwards; */
+    animation: slide-top 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) var(--delay) forwards;
 }
 
 #pseudo:hover {
     border: 2px solid var(--J2-color);
 }
-  
+
 #pseudo:focus {
-    outline: none; 
-    animation: /*slide-top 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) forwards,*/ border-pulse 2s infinite;
+    outline: none;
+    animation: slide-top 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) var(--delay) forwards, border-pulse 2s infinite;
 }
 
 .menu-button {
@@ -104,48 +105,35 @@ body {
     padding: 10px 30px;
     margin-bottom: 20px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, transform 250ms;
     text-shadow: 1px 2px 3px #00000070;
     box-shadow: 0px 0px 10px 1px #ffae00;
+
+    &.first {
+        animation: slide-top 0.7s cubic-bezier(0.250, 0.460, 0.450, 0.940) var(--delay) forwards;
+    }
+
+    &.second {
+        animation: slide-top 0.9s cubic-bezier(0.250, 0.460, 0.450, 0.940) var(--delay) forwards;
+    }
 }
-
-/* .first {
-    animation: slide-top 0.7s cubic-bezier(0.250, 0.460, 0.450, 0.940) forwards;
-}
-
-.first:hover {
-    box-shadow: -70px 0 70px -5px var(--J1-color), 75px 0 70px -5px var(--J2-color);
-    animation: slide-top 0.7s cubic-bezier(0.250, 0.460, 0.450, 0.940) forwards, scale-up-center 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
-}
-
-.second {
-    animation: slide-top 0.9s cubic-bezier(0.250, 0.460, 0.450, 0.940) forwards;
-}
-.second:hover {
-    box-shadow: -70px 0 70px -5px var(--J1-color), 75px 0 70px -5px var(--J2-color);
-    animation: slide-top 0.9s cubic-bezier(0.250, 0.460, 0.450, 0.940) forwards, scale-up-center 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
-} */
-
-
-
-.first:hover {
-    box-shadow: -70px 0 70px -5px var(--J1-color), 75px 0 70px -5px var(--J2-color);
-    animation: scale-up-center 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
-}
-
-
-.second:hover {
-    box-shadow: -70px 0 70px -5px var(--J1-color), 75px 0 70px -5px var(--J2-color);
-    animation: scale-up-center 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
-}
-
-
 
 .menu-button:hover {
     background-color: #ff0000;
+    box-shadow: -70px 0 70px -5px var(--J1-color), 75px 0 70px -5px var(--J2-color);
+    transform: scale(1.2);
+
 
     &.btn-abandon {
         box-shadow: 0px 0px 10px 1px #ff0000;
+    }
+
+    &.first {
+        animation: slide-top 0.7s cubic-bezier(0.250, 0.460, 0.450, 0.940) var(--delay) forwards, scale-up-center 200ms 1 cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+    }
+
+    &.second {
+        animation: slide-top 0.9s cubic-bezier(0.250, 0.460, 0.450, 0.940) var(--delay) forwards, scale-up-center 200ms 1 cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
     }
 }
 
@@ -153,15 +141,15 @@ body {
     color: #000000;
     font-size: 1.2rem;
     text-align: right;
-    text-decoration:underline;
+    text-decoration: underline;
 }
+
 .infoAnim {
     animation: slide-fwd-top 1.1s cubic-bezier(0.250, 0.460, 0.450, 0.940) 0s both;
 }
 
 .recherche {
-    font-size:  1.5rem;
-    /* animation: rotate-hor-center 1.5s cubic-bezier(0.455, 0.030, 0.515, 0.955) 0.5s infinite both; */
+    font-size: 1.5rem;
 }
 
 .game-hud {
@@ -178,7 +166,7 @@ body {
 }
 
 .plateau {
-    display:grid;
+    display: grid;
     justify-items: center;
 }
 
@@ -188,7 +176,7 @@ body {
     border-radius: 20px;
     padding: 0.5vh;
     box-shadow: 9px 9px 10px 1px #000000ab;
-    
+
     td {
         border: 5px solid rgb(2, 61, 203);
         border-radius: 100%;
@@ -202,12 +190,11 @@ body {
 
 .portePion {
     display: grid;
-    justify-items : center;
-    align-items : center;
-    width : 100%;
-    height : 100%;
+    justify-items: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
     border-radius: 100%;
-    /* 0px 0px 20px 10px #00edffab */
 
     &.J1 {
         background-color: rgb(255, 51, 51);
@@ -219,9 +206,9 @@ body {
 }
 
 .game-pion {
-    width : 70%;
-    height : 70%;
-    border-radius : 100%;
+    width: 70%;
+    height: 70%;
+    border-radius: 100%;
     border: 3px solid transparent;
     border-inline-width: 1px;
     border-bottom-width: 2px;
@@ -231,7 +218,6 @@ body {
         border-inline-color: rgb(193, 0, 0);
         border-top-color: rgb(193, 0, 0);
         border-bottom-color: rgb(255, 196, 196);
-        /* filter: blur(0.5px); */
     }
 
     &.J2 {
@@ -239,25 +225,24 @@ body {
         border-top-color: rgb(190, 178, 0);
         border-inline-color: rgb(190, 178, 0);
         border-bottom-color: rgb(255, 251, 193);
-        /* filter: blur(0.5px); */
     }
 }
 
 
 .modal {
-    display: none; 
+    display: none;
     position: fixed;
     z-index: 10;
     left: 0;
     top: 0;
-    width: 100%; 
+    width: 100%;
     height: 100%;
     overflow: auto;
-    background-color: rgb(0,0,0); 
-    background-color: rgba(0,0,0,0.4);
-  }
-  
-/* Modal Content/Box */
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+
 .modal-content {
     background-color: #fefefe;
     margin: 10% 30%;
@@ -277,4 +262,3 @@ body {
         font-size: xxx-large;
     }
 }
-
