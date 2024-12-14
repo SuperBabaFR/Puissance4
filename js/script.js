@@ -1,15 +1,21 @@
 // { "pseudo" : "pseudonyme", "identifiant" : "code", "etat" : "OK" }
 
+// The URL for the API
 const urlAPI = "https://trankillprojets.fr/P4/?";
 
+// The URL for the game
 const URL = "https://superbabafr.github.io/Puissance4/";
 
+// Phrases for reconnection and connection messages
 const phraseReconnexion = "Reconnexion : ";
 const phraseConnecte = "Connecté en tant que ";
 
+// Colors for players
 const colorJ1 = "#ff3333";
 const colorJ2 = "#d8cc00";
 
+
+// Enumaration of possible game states
 const etat = Object.freeze({
     KO: "KO", // votre compte n'est pas reconnu par le serveur
     OK: "OK", // votre compte est reconnu par le serveur
@@ -22,17 +28,23 @@ const etat = Object.freeze({
     MATCHNUL: "Match nul" // Aucun des joueurs ne remporte la partie
 });
 
+// boolean for player turn
 let monTour = false;
+
+// boolean to check if the game is ended
 let gameEnd = false;
 
+// Number of background game pieces
 const nbPions = 20;
 
+// Asynchronous function to register
 async function Inscription() {
+    // Get the value of the input field for the pseudonyme
     const pseudoInput = document.getElementById("pseudo");
     const message = document.getElementById("message");
 
     console.log(pseudoInput.value);
-
+    // If the stored pseudonyme is not the same as the value of the input field
     if (localStorage.getItem("pseudo") != pseudoInput.value) {
         const apicall = await fetch(urlAPI + "inscription&pseudo=" + pseudoInput.value);
         const reponse = await apicall.json();
@@ -51,14 +63,15 @@ async function Inscription() {
             localStorage.setItem("id", reponse.identifiant);
         }
     }
+    // Call the Transition for the menu
     MenuTransition();
-    // window.location.replace("menu.html");
 }
 
 // Reconnexion avec un pseudo précédemment enregistré
 function Reconnexion() {
+    // Call the Transition for the menu
     MenuTransition();
-    // window.location.replace("menu.html");
+
     console.log("Reconnexion");
     console.log("Pseudo : " + localStorage.getItem("pseudo"));
     console.log("Identifiant : " + localStorage.getItem("id"));
@@ -80,9 +93,6 @@ function Quitter() {
     const etatSearch = document.getElementById("etat");
     const pseudoAdversaire = document.getElementById("j2");
     if ((etatSearch != null && etatSearch.textContent != "") || (pseudoAdversaire != null && pseudoAdversaire.textContent != "")) {
-        // document.getElementById("videoWin").style.display = "none";
-        // document.getElementById("videoRagequit").style.display = "none";
-        // document.getElementById("videoLoose").style.display = "none";
         // Demande un abandon de la recherche uniquement si elle à été lancée
         Giveup();
     }
@@ -563,3 +573,6 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     }
 });
+
+
+// Code a function for open a new tab?
